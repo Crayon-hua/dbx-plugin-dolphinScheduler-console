@@ -1,0 +1,576 @@
+{
+  "$schema": "https://raw.githubusercontent.com/t8y2/dbx/main/plugins/manifest.schema.json",
+  "manifest_version": 1,
+  "id": "io.github.crayon-hua.dolphinscheduler-console",
+  "name": "DolphinScheduler",
+  "version": "0.1.0",
+  "publisher": "crayon-hua",
+  "source": "https://github.com/Crayon-hua/dbx-plugin-dolphinScheduler-console",
+  "homepage": "https://github.com/Crayon-hua/dbx-plugin-dolphinScheduler-console",
+  "description": "DolphinScheduler 项目、工作流、实例、调度与日志；连接由用户自行配置。",
+  "icon": "assets/plugin.svg",
+  "permissions": [],
+  "engines": {
+    "dbx": ">=0.5.68",
+    "host_api": "1"
+  },
+  "entrypoints": {
+    "backend": {
+      "executable": "bin/dbx-plugin-dbx-dolphinscheduler",
+      "transport": "stdio-jsonl",
+      "protocol_versions": [
+        1
+      ]
+    },
+    "ui": {
+      "root": "ui",
+      "entry": "ui/workbench.html"
+    }
+  },
+  "contributions": [
+    {
+      "type": "connection-provider",
+      "id": "io.github.crayon-hua.dolphinscheduler-console.connection",
+      "label": "DolphinScheduler 连接",
+      "icon": "assets/plugin.svg",
+      "database_type": "dolphinscheduler",
+      "description": "填写你自己的 DolphinScheduler API 地址和 Token。",
+      "fields": [
+        {
+          "key": "display_name",
+          "label": "连接名称",
+          "type": "text",
+          "binding": "name",
+          "required": true
+        },
+        {
+          "key": "host",
+          "label": "API 主机",
+          "type": "text",
+          "binding": "host",
+          "required": true,
+          "placeholder": "域名或 IP，不含 http:// 和路径"
+        },
+        {
+          "key": "port",
+          "label": "API 端口",
+          "type": "number",
+          "binding": "port",
+          "default": 12345,
+          "required": true
+        },
+        {
+          "key": "scheme",
+          "label": "协议",
+          "type": "select",
+          "binding": "config",
+          "default": "http",
+          "options": [
+            {
+              "label": "HTTP",
+              "value": "http"
+            },
+            {
+              "label": "HTTPS",
+              "value": "https"
+            }
+          ]
+        },
+        {
+          "key": "api_path",
+          "label": "API 根路径",
+          "type": "text",
+          "binding": "config",
+          "default": "/dolphinscheduler",
+          "description": "反向代理可填自定义路径；根路径服务填 /。"
+        },
+        {
+          "key": "api_token",
+          "label": "API Token",
+          "type": "password",
+          "binding": "secret",
+          "required": true,
+          "description": "在 DolphinScheduler 中创建的访问令牌，保存在 DBX 密钥存储中。"
+        },
+        {
+          "key": "read_only",
+          "label": "只读连接",
+          "type": "boolean",
+          "binding": "config",
+          "default": true,
+          "description": "开启时禁止启动、停止、发布和其他修改操作。"
+        },
+        {
+          "key": "timeout_seconds",
+          "label": "请求超时（秒）",
+          "type": "number",
+          "binding": "config",
+          "default": 30
+        }
+      ],
+      "workbench": "io.github.crayon-hua.dolphinscheduler-console.workbench",
+      "capabilities": [
+        "test",
+        "connect",
+        "disconnect"
+      ]
+    },
+    {
+      "type": "workbench",
+      "id": "io.github.crayon-hua.dolphinscheduler-console.workbench",
+      "label": "DolphinScheduler 工作台",
+      "description": "浏览工作流、运行实例、调度和任务日志。",
+      "icon": "assets/plugin.svg"
+    },
+    {
+      "type": "mcp",
+      "id": "io.github.crayon-hua.dolphinscheduler-console.mcp",
+      "ai_tools": true,
+      "external_tools": true,
+      "toolsets": [
+        {
+          "id": "projects",
+          "title": "项目与环境"
+        },
+        {
+          "id": "workflows",
+          "title": "工作流定义"
+        },
+        {
+          "id": "instances",
+          "title": "运行实例与日志"
+        },
+        {
+          "id": "schedules",
+          "title": "定时调度"
+        }
+      ],
+      "tools": {
+        "projects_list": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_get": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_create": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "project_update": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "workflows_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_tasks": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_versions": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_create": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_update": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_release": {
+          "access": "full",
+          "toolset": "workflows"
+        },
+        "workflow_start": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "instances_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_get": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_tasks": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_variables": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_execute": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "tasks_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "task_stop": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "task_definitions_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_definition_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_codes_generate": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "schedules_list": {
+          "access": "read",
+          "toolset": "schedules"
+        },
+        "schedule_create": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_update": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_online": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_offline": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_delete": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "task_log": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "worker_groups": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "lineage_get": {
+          "access": "read",
+          "toolset": "workflows"
+        }
+      }
+    },
+    {
+      "type": "mcp",
+      "id": "io.github.crayon-hua.dolphinscheduler-console.mcp",
+      "ai_tools": true,
+      "external_tools": true,
+      "toolsets": [
+        {
+          "id": "projects",
+          "title": "项目与环境"
+        },
+        {
+          "id": "workflows",
+          "title": "工作流定义"
+        },
+        {
+          "id": "instances",
+          "title": "运行实例与日志"
+        },
+        {
+          "id": "schedules",
+          "title": "定时调度"
+        }
+      ],
+      "tools": {
+        "projects_list": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_get": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_create": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "project_update": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "workflows_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_tasks": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_versions": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_create": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_update": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_release": {
+          "access": "full",
+          "toolset": "workflows"
+        },
+        "workflow_start": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "instances_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_get": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_tasks": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_variables": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_execute": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "tasks_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "task_stop": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "task_definitions_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_definition_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_codes_generate": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "schedules_list": {
+          "access": "read",
+          "toolset": "schedules"
+        },
+        "schedule_create": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_update": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_online": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_offline": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_delete": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "task_log": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "worker_groups": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "lineage_get": {
+          "access": "read",
+          "toolset": "workflows"
+        }
+      }
+    },
+    {
+      "type": "mcp",
+      "id": "io.github.crayon-hua.dolphinscheduler-console.mcp",
+      "ai_tools": true,
+      "external_tools": true,
+      "toolsets": [
+        {
+          "id": "projects",
+          "title": "项目与环境"
+        },
+        {
+          "id": "workflows",
+          "title": "工作流定义"
+        },
+        {
+          "id": "instances",
+          "title": "运行实例与日志"
+        },
+        {
+          "id": "schedules",
+          "title": "定时调度"
+        }
+      ],
+      "tools": {
+        "projects_list": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_get": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "project_create": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "project_update": {
+          "access": "write",
+          "toolset": "projects"
+        },
+        "workflows_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_tasks": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_versions": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "workflow_create": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_update": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "workflow_release": {
+          "access": "full",
+          "toolset": "workflows"
+        },
+        "workflow_start": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "instances_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_get": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_tasks": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_variables": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "instance_execute": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "tasks_list": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "task_stop": {
+          "access": "full",
+          "toolset": "instances"
+        },
+        "task_definitions_list": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_definition_get": {
+          "access": "read",
+          "toolset": "workflows"
+        },
+        "task_codes_generate": {
+          "access": "write",
+          "toolset": "workflows"
+        },
+        "schedules_list": {
+          "access": "read",
+          "toolset": "schedules"
+        },
+        "schedule_create": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_update": {
+          "access": "write",
+          "toolset": "schedules"
+        },
+        "schedule_online": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_offline": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "schedule_delete": {
+          "access": "full",
+          "toolset": "schedules"
+        },
+        "task_log": {
+          "access": "read",
+          "toolset": "instances"
+        },
+        "worker_groups": {
+          "access": "read",
+          "toolset": "projects"
+        },
+        "lineage_get": {
+          "access": "read",
+          "toolset": "workflows"
+        }
+      }
+    }
+  ]
+}

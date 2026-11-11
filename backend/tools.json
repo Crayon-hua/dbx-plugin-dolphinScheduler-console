@@ -1,0 +1,2324 @@
+[
+  {
+    "name": "projects_list",
+    "description": "分页查询项目列表",
+    "method": "GET",
+    "path": "/projects",
+    "access": "read",
+    "group": "projects",
+    "params": [
+      {
+        "name": "searchVal",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "searchVal": {
+          "type": "string",
+          "description": "搜索值 "
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "project_get",
+    "description": "通过项目ID查询项目信息",
+    "method": "GET",
+    "path": "/projects/{code}",
+    "access": "read",
+    "group": "projects",
+    "params": [
+      {
+        "name": "code",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "project_create",
+    "description": "创建项目",
+    "method": "POST",
+    "path": "/projects",
+    "access": "write",
+    "group": "projects",
+    "params": [
+      {
+        "name": "projectName",
+        "in": "query"
+      },
+      {
+        "name": "description",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "description": "项目名称 "
+        },
+        "description": {
+          "type": "string",
+          "description": "项目描述 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectName",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "project_update",
+    "description": "更新项目",
+    "method": "PUT",
+    "path": "/projects/{code}",
+    "access": "write",
+    "group": "projects",
+    "params": [
+      {
+        "name": "code",
+        "in": "path"
+      },
+      {
+        "name": "projectName",
+        "in": "query"
+      },
+      {
+        "name": "description",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "projectName": {
+          "type": "string",
+          "description": "项目名称 "
+        },
+        "description": {
+          "type": "string",
+          "description": "项目描述 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "code",
+        "projectName",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflows_list",
+    "description": "分页查询流程定义列表",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-definition",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "searchVal",
+        "in": "query"
+      },
+      {
+        "name": "otherParamsJson",
+        "in": "query"
+      },
+      {
+        "name": "userId",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "searchVal": {
+          "type": "string",
+          "description": "搜索值 "
+        },
+        "otherParamsJson": {
+          "type": "string",
+          "description": "OTHER_PARAMS_JSON "
+        },
+        "userId": {
+          "type": "integer",
+          "description": "用户ID "
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "projectCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_get",
+    "description": "QUERY_PROCESS_DEFINITION_BY_CODE_NOTES",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-definition/{code}",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_tasks",
+    "description": "GET_TASK_LIST_BY_DEFINITION_CODE_NOTES",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-definition/{code}/tasks",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_versions",
+    "description": "查询流程历史版本信息",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-definition/{code}/versions",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_create",
+    "description": "创建流程定义",
+    "method": "POST",
+    "path": "/projects/{projectCode}/process-definition",
+    "access": "write",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "name",
+        "in": "query"
+      },
+      {
+        "name": "description",
+        "in": "query"
+      },
+      {
+        "name": "globalParams",
+        "in": "query"
+      },
+      {
+        "name": "locations",
+        "in": "query"
+      },
+      {
+        "name": "timeout",
+        "in": "query"
+      },
+      {
+        "name": "taskRelationJson",
+        "in": "query"
+      },
+      {
+        "name": "taskDefinitionJson",
+        "in": "query"
+      },
+      {
+        "name": "otherParamsJson",
+        "in": "query"
+      },
+      {
+        "name": "executionType",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "name": {
+          "type": "string",
+          "description": "流程定义名称 "
+        },
+        "description": {
+          "type": "string",
+          "description": "流程定义描述信息 "
+        },
+        "globalParams": {
+          "type": "string",
+          "default": "[]"
+        },
+        "locations": {
+          "type": "string",
+          "description": "流程定义节点坐标位置信息(json格式) "
+        },
+        "timeout": {
+          "type": "integer",
+          "default": 0
+        },
+        "taskRelationJson": {
+          "type": "string"
+        },
+        "taskDefinitionJson": {
+          "type": "string"
+        },
+        "otherParamsJson": {
+          "type": "string",
+          "description": "OTHER_PARAMS_JSON "
+        },
+        "executionType": {
+          "type": "string",
+          "enum": [
+            "PARALLEL",
+            "SERIAL_WAIT",
+            "SERIAL_DISCARD",
+            "SERIAL_PRIORITY"
+          ],
+          "default": "PARALLEL"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "name",
+        "locations",
+        "taskRelationJson",
+        "taskDefinitionJson",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_update",
+    "description": "更新流程定义",
+    "method": "PUT",
+    "path": "/projects/{projectCode}/process-definition/{code}",
+    "access": "write",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "name",
+        "in": "query"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      },
+      {
+        "name": "description",
+        "in": "query"
+      },
+      {
+        "name": "globalParams",
+        "in": "query"
+      },
+      {
+        "name": "locations",
+        "in": "query"
+      },
+      {
+        "name": "timeout",
+        "in": "query"
+      },
+      {
+        "name": "taskRelationJson",
+        "in": "query"
+      },
+      {
+        "name": "taskDefinitionJson",
+        "in": "query"
+      },
+      {
+        "name": "executionType",
+        "in": "query"
+      },
+      {
+        "name": "releaseState",
+        "in": "query"
+      },
+      {
+        "name": "otherParamsJson",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "name": {
+          "type": "string",
+          "description": "流程定义名称 "
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "description": {
+          "type": "string",
+          "description": "流程定义描述信息 "
+        },
+        "globalParams": {
+          "type": "string",
+          "default": "[]"
+        },
+        "locations": {
+          "type": "string",
+          "description": "流程定义节点坐标位置信息(json格式) "
+        },
+        "timeout": {
+          "type": "integer",
+          "default": 0
+        },
+        "taskRelationJson": {
+          "type": "string"
+        },
+        "taskDefinitionJson": {
+          "type": "string"
+        },
+        "executionType": {
+          "type": "string",
+          "enum": [
+            "PARALLEL",
+            "SERIAL_WAIT",
+            "SERIAL_DISCARD",
+            "SERIAL_PRIORITY"
+          ],
+          "default": "PARALLEL"
+        },
+        "releaseState": {
+          "type": "string",
+          "enum": [
+            "OFFLINE",
+            "ONLINE"
+          ],
+          "description": "发布流程定义 "
+        },
+        "otherParamsJson": {
+          "type": "string",
+          "description": "OTHER_PARAMS_JSON "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "name",
+        "code",
+        "locations",
+        "taskRelationJson",
+        "taskDefinitionJson",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_release",
+    "description": "发布流程定义",
+    "method": "POST",
+    "path": "/projects/{projectCode}/process-definition/{code}/release",
+    "access": "full",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      },
+      {
+        "name": "releaseState",
+        "in": "query"
+      },
+      {
+        "name": "name",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "releaseState": {
+          "type": "string",
+          "enum": [
+            "OFFLINE",
+            "ONLINE"
+          ],
+          "description": "PROCESS_DEFINITION_RELEASE "
+        },
+        "name": {
+          "type": "string",
+          "description": "流程定义名称 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "code",
+        "releaseState",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "workflow_start",
+    "description": "运行流程实例",
+    "method": "POST",
+    "path": "/projects/{projectCode}/executors/start-process-instance",
+    "access": "full",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processDefinitionCode",
+        "in": "query"
+      },
+      {
+        "name": "scheduleTime",
+        "in": "query"
+      },
+      {
+        "name": "failureStrategy",
+        "in": "query"
+      },
+      {
+        "name": "startNodeList",
+        "in": "query"
+      },
+      {
+        "name": "taskDependType",
+        "in": "query"
+      },
+      {
+        "name": "execType",
+        "in": "query"
+      },
+      {
+        "name": "warningType",
+        "in": "query"
+      },
+      {
+        "name": "warningGroupId",
+        "in": "query"
+      },
+      {
+        "name": "runMode",
+        "in": "query"
+      },
+      {
+        "name": "processInstancePriority",
+        "in": "query"
+      },
+      {
+        "name": "workerGroup",
+        "in": "query"
+      },
+      {
+        "name": "tenantCode",
+        "in": "query"
+      },
+      {
+        "name": "environmentCode",
+        "in": "query"
+      },
+      {
+        "name": "timeout",
+        "in": "query"
+      },
+      {
+        "name": "startParams",
+        "in": "query"
+      },
+      {
+        "name": "expectedParallelismNumber",
+        "in": "query"
+      },
+      {
+        "name": "dryRun",
+        "in": "query"
+      },
+      {
+        "name": "testFlag",
+        "in": "query"
+      },
+      {
+        "name": "complementDependentMode",
+        "in": "query"
+      },
+      {
+        "name": "version",
+        "in": "query"
+      },
+      {
+        "name": "allLevelDependent",
+        "in": "query"
+      },
+      {
+        "name": "executionOrder",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processDefinitionCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "scheduleTime": {
+          "type": "string",
+          "description": "定时时间,空字符串表示当前天 ",
+          "default": ""
+        },
+        "failureStrategy": {
+          "type": "string",
+          "enum": [
+            "END",
+            "CONTINUE"
+          ],
+          "description": "失败策略 "
+        },
+        "startNodeList": {
+          "type": "string",
+          "description": "开始节点列表(节点name) "
+        },
+        "taskDependType": {
+          "type": "string",
+          "enum": [
+            "TASK_ONLY",
+            "TASK_PRE",
+            "TASK_POST"
+          ],
+          "description": "任务依赖类型 "
+        },
+        "execType": {
+          "type": "string",
+          "enum": [
+            "START_PROCESS",
+            "START_CURRENT_TASK_PROCESS",
+            "RECOVER_TOLERANCE_FAULT_PROCESS",
+            "RECOVER_SUSPENDED_PROCESS",
+            "START_FAILURE_TASK_PROCESS",
+            "COMPLEMENT_DATA",
+            "SCHEDULER",
+            "REPEAT_RUNNING",
+            "PAUSE",
+            "STOP",
+            "RECOVER_WAITING_THREAD",
+            "RECOVER_SERIAL_WAIT",
+            "EXECUTE_TASK",
+            "DYNAMIC_GENERATION"
+          ],
+          "description": "指令类型 "
+        },
+        "warningType": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "SUCCESS",
+            "FAILURE",
+            "ALL",
+            "GLOBAL"
+          ],
+          "description": "发送策略 "
+        },
+        "warningGroupId": {
+          "type": "integer",
+          "description": "发送组ID "
+        },
+        "runMode": {
+          "type": "string",
+          "enum": [
+            "RUN_MODE_SERIAL",
+            "RUN_MODE_PARALLEL"
+          ],
+          "description": "运行模式 "
+        },
+        "processInstancePriority": {
+          "type": "string",
+          "enum": [
+            "HIGHEST",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "LOWEST"
+          ],
+          "description": "流程实例优先级 "
+        },
+        "workerGroup": {
+          "type": "string",
+          "description": "worker群组 "
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "操作系统租户 "
+        },
+        "environmentCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "环境代码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "超时时间 "
+        },
+        "startParams": {
+          "type": "string"
+        },
+        "expectedParallelismNumber": {
+          "type": "integer",
+          "description": "补数任务自定义并行度 "
+        },
+        "dryRun": {
+          "type": "integer",
+          "description": "是否空跑 "
+        },
+        "testFlag": {
+          "type": "integer",
+          "description": "测试标识 "
+        },
+        "complementDependentMode": {
+          "type": "string",
+          "enum": [
+            "OFF_MODE",
+            "ALL_DEPENDENT"
+          ],
+          "description": "补数依赖的类型 "
+        },
+        "version": {
+          "type": "integer"
+        },
+        "allLevelDependent": {
+          "type": "boolean",
+          "description": "ALL_LEVEL_DEPENDENT "
+        },
+        "executionOrder": {
+          "type": "string",
+          "enum": [
+            "DESC_ORDER",
+            "ASC_ORDER"
+          ],
+          "description": "EXECUTION_ORDER "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "processDefinitionCode",
+        "failureStrategy",
+        "warningType",
+        "processInstancePriority",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "instances_list",
+    "description": "查询流程实例列表",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-instances",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processDefineCode",
+        "in": "query"
+      },
+      {
+        "name": "searchVal",
+        "in": "query"
+      },
+      {
+        "name": "executorName",
+        "in": "query"
+      },
+      {
+        "name": "stateType",
+        "in": "query"
+      },
+      {
+        "name": "host",
+        "in": "query"
+      },
+      {
+        "name": "startDate",
+        "in": "query"
+      },
+      {
+        "name": "endDate",
+        "in": "query"
+      },
+      {
+        "name": "otherParamsJson",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processDefineCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "searchVal": {
+          "type": "string",
+          "description": "搜索值 "
+        },
+        "executorName": {
+          "type": "string",
+          "description": "流程名称 "
+        },
+        "stateType": {
+          "type": "string",
+          "description": "工作流和任务节点的运行状态 执行状态枚举名，例如 RUNNING_EXECUTION、SUCCESS、FAILURE。"
+        },
+        "host": {
+          "type": "string",
+          "description": "运行任务的主机IP地址 "
+        },
+        "startDate": {
+          "type": "string",
+          "description": "开始时间 "
+        },
+        "endDate": {
+          "type": "string",
+          "description": "结束时间 "
+        },
+        "otherParamsJson": {
+          "type": "string"
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "projectCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "instance_get",
+    "description": "通过流程实例ID查询流程实例",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-instances/{id}",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "流程实例ID "
+        }
+      },
+      "required": [
+        "projectCode",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "instance_tasks",
+    "description": "通过流程实例ID查询任务列表",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-instances/{id}/tasks",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "流程实例ID "
+        }
+      },
+      "required": [
+        "projectCode",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "instance_variables",
+    "description": "查询流程实例全局变量和局部变量",
+    "method": "GET",
+    "path": "/projects/{projectCode}/process-instances/{id}/view-variables",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "流程实例ID "
+        }
+      },
+      "required": [
+        "projectCode",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "instance_execute",
+    "description": "执行流程实例的各种操作(暂停、停止、重跑、恢复等)",
+    "method": "POST",
+    "path": "/projects/{projectCode}/executors/execute",
+    "access": "full",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processInstanceId",
+        "in": "query"
+      },
+      {
+        "name": "executeType",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processInstanceId": {
+          "type": "integer",
+          "description": "流程实例ID "
+        },
+        "executeType": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "REPEAT_RUNNING",
+            "RECOVER_SUSPENDED_PROCESS",
+            "START_FAILURE_TASK_PROCESS",
+            "STOP",
+            "PAUSE",
+            "EXECUTE_TASK"
+          ],
+          "description": "执行类型 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "processInstanceId",
+        "executeType",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "tasks_list",
+    "description": "分页查询任务实例列表",
+    "method": "GET",
+    "path": "/projects/{projectCode}/task-instances",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processInstanceId",
+        "in": "query"
+      },
+      {
+        "name": "processInstanceName",
+        "in": "query"
+      },
+      {
+        "name": "processDefinitionName",
+        "in": "query"
+      },
+      {
+        "name": "searchVal",
+        "in": "query"
+      },
+      {
+        "name": "taskName",
+        "in": "query"
+      },
+      {
+        "name": "taskCode",
+        "in": "query"
+      },
+      {
+        "name": "executorName",
+        "in": "query"
+      },
+      {
+        "name": "stateType",
+        "in": "query"
+      },
+      {
+        "name": "host",
+        "in": "query"
+      },
+      {
+        "name": "startDate",
+        "in": "query"
+      },
+      {
+        "name": "endDate",
+        "in": "query"
+      },
+      {
+        "name": "taskExecuteType",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processInstanceId": {
+          "type": "integer",
+          "description": "流程实例ID "
+        },
+        "processInstanceName": {
+          "type": "string",
+          "description": "流程实例名称 "
+        },
+        "processDefinitionName": {
+          "type": "string"
+        },
+        "searchVal": {
+          "type": "string",
+          "description": "搜索值 "
+        },
+        "taskName": {
+          "type": "string",
+          "description": "任务实例名 "
+        },
+        "taskCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "TASK_CODE  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "executorName": {
+          "type": "string",
+          "description": "流程名称 "
+        },
+        "stateType": {
+          "type": "string",
+          "description": "工作流和任务节点的运行状态 执行状态枚举名，例如 RUNNING_EXECUTION、SUCCESS、FAILURE。"
+        },
+        "host": {
+          "type": "string",
+          "description": "运行任务的主机IP地址 "
+        },
+        "startDate": {
+          "type": "string",
+          "description": "开始时间 "
+        },
+        "endDate": {
+          "type": "string",
+          "description": "结束时间 "
+        },
+        "taskExecuteType": {
+          "type": "string",
+          "enum": [
+            "BATCH",
+            "STREAM"
+          ],
+          "description": "任务执行类型 "
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "projectCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "task_stop",
+    "description": "停止任务实例",
+    "method": "POST",
+    "path": "/projects/{projectCode}/task-instances/{id}/stop",
+    "access": "full",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "任务实例ID "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "task_definitions_list",
+    "description": "查询任务定义列表页面",
+    "method": "GET",
+    "path": "/projects/{projectCode}/task-definition",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "searchTaskName",
+        "in": "query"
+      },
+      {
+        "name": "taskType",
+        "in": "query"
+      },
+      {
+        "name": "taskExecuteType",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      },
+      {
+        "name": "searchWorkflowName",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "searchTaskName": {
+          "type": "string",
+          "description": "查询任务名称 "
+        },
+        "taskType": {
+          "type": "string",
+          "description": "任务类型 "
+        },
+        "taskExecuteType": {
+          "type": "string",
+          "enum": [
+            "BATCH",
+            "STREAM"
+          ],
+          "description": "任务执行类型 "
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "searchWorkflowName": {
+          "type": "string",
+          "description": "查询工作量名称 "
+        }
+      },
+      "required": [
+        "projectCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "task_definition_get",
+    "description": "查询任务定义详情",
+    "method": "GET",
+    "path": "/projects/{projectCode}/task-definition/{code}",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "code",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "任务定义代码  64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "task_codes_generate",
+    "description": "查询任务代码列表",
+    "method": "GET",
+    "path": "/projects/{projectCode}/task-definition/gen-task-codes",
+    "access": "write",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "genNum",
+        "in": "query"
+      },
+      {
+        "name": "projectCode",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "genNum": {
+          "type": "integer",
+          "description": "总数 "
+        },
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": " 64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "genNum",
+        "projectCode",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedules_list",
+    "description": "分页查询定时",
+    "method": "GET",
+    "path": "/projects/{projectCode}/schedules",
+    "access": "read",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processDefinitionCode",
+        "in": "query"
+      },
+      {
+        "name": "searchVal",
+        "in": "query"
+      },
+      {
+        "name": "pageNo",
+        "in": "query"
+      },
+      {
+        "name": "pageSize",
+        "in": "query"
+      },
+      {
+        "name": "processDefinitionId",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processDefinitionCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": " 64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "searchVal": {
+          "type": "string",
+          "description": "搜索值 "
+        },
+        "pageNo": {
+          "type": "integer",
+          "description": "页码号 ",
+          "default": 1,
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "页大小 ",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "processDefinitionId": {
+          "type": "integer",
+          "description": "流程定义ID "
+        }
+      },
+      "required": [
+        "projectCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedule_create",
+    "description": "创建定时",
+    "method": "POST",
+    "path": "/projects/{projectCode}/schedules",
+    "access": "write",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "processDefinitionCode",
+        "in": "query"
+      },
+      {
+        "name": "schedule",
+        "in": "query"
+      },
+      {
+        "name": "warningType",
+        "in": "query"
+      },
+      {
+        "name": "warningGroupId",
+        "in": "query"
+      },
+      {
+        "name": "failureStrategy",
+        "in": "query"
+      },
+      {
+        "name": "workerGroup",
+        "in": "query"
+      },
+      {
+        "name": "tenantCode",
+        "in": "query"
+      },
+      {
+        "name": "environmentCode",
+        "in": "query"
+      },
+      {
+        "name": "processInstancePriority",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processDefinitionCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "流程定义编码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "schedule": {
+          "type": "string",
+          "description": "JSON字符串，含 startTime、endTime、crontab、timezoneId；日期格式 yyyy-MM-dd HH:mm:ss。"
+        },
+        "warningType": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "SUCCESS",
+            "FAILURE",
+            "ALL",
+            "GLOBAL"
+          ],
+          "description": "发送策略 "
+        },
+        "warningGroupId": {
+          "type": "integer",
+          "description": "发送组ID "
+        },
+        "failureStrategy": {
+          "type": "string",
+          "enum": [
+            "END",
+            "CONTINUE"
+          ],
+          "description": "失败策略 "
+        },
+        "workerGroup": {
+          "type": "string",
+          "description": "worker群组 "
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "操作系统租户 "
+        },
+        "environmentCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "环境代码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processInstancePriority": {
+          "type": "string",
+          "enum": [
+            "HIGHEST",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "LOWEST"
+          ],
+          "description": "流程实例优先级 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "processDefinitionCode",
+        "schedule",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedule_update",
+    "description": "更新定时",
+    "method": "PUT",
+    "path": "/projects/{projectCode}/schedules/{id}",
+    "access": "write",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      },
+      {
+        "name": "schedule",
+        "in": "query"
+      },
+      {
+        "name": "warningType",
+        "in": "query"
+      },
+      {
+        "name": "warningGroupId",
+        "in": "query"
+      },
+      {
+        "name": "failureStrategy",
+        "in": "query"
+      },
+      {
+        "name": "workerGroup",
+        "in": "query"
+      },
+      {
+        "name": "tenantCode",
+        "in": "query"
+      },
+      {
+        "name": "environmentCode",
+        "in": "query"
+      },
+      {
+        "name": "processInstancePriority",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "定时ID "
+        },
+        "schedule": {
+          "type": "string",
+          "description": "JSON字符串，含 startTime、endTime、crontab、timezoneId；日期格式 yyyy-MM-dd HH:mm:ss。"
+        },
+        "warningType": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "SUCCESS",
+            "FAILURE",
+            "ALL",
+            "GLOBAL"
+          ],
+          "description": "发送策略 "
+        },
+        "warningGroupId": {
+          "type": "integer",
+          "description": "发送组ID "
+        },
+        "failureStrategy": {
+          "type": "string",
+          "enum": [
+            "END",
+            "CONTINUE"
+          ],
+          "description": "失败策略 "
+        },
+        "workerGroup": {
+          "type": "string",
+          "description": "worker群组 "
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "操作系统租户 "
+        },
+        "environmentCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "环境代码  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "processInstancePriority": {
+          "type": "string",
+          "enum": [
+            "HIGHEST",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "LOWEST"
+          ],
+          "description": "流程实例优先级 "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "id",
+        "schedule",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedule_online",
+    "description": "定时上线",
+    "method": "POST",
+    "path": "/projects/{projectCode}/schedules/{id}/online",
+    "access": "full",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "定时ID "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedule_offline",
+    "description": "定时下线",
+    "method": "POST",
+    "path": "/projects/{projectCode}/schedules/{id}/offline",
+    "access": "full",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "定时ID "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "schedule_delete",
+    "description": "根据定时id删除定时数据",
+    "method": "DELETE",
+    "path": "/projects/{projectCode}/schedules/{id}",
+    "access": "full",
+    "group": "schedules",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "id": {
+          "type": "integer",
+          "description": "定时ID "
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "确认执行此修改操作；只读连接仍会拒绝。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "task_log",
+    "description": "查询指定项目的任务实例日志",
+    "method": "GET",
+    "path": "/log/{projectCode}/detail",
+    "access": "read",
+    "group": "instances",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "taskInstanceId",
+        "in": "query"
+      },
+      {
+        "name": "skipLineNum",
+        "in": "query"
+      },
+      {
+        "name": "limit",
+        "in": "query"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "taskInstanceId": {
+          "type": "integer",
+          "description": "任务实例ID "
+        },
+        "skipLineNum": {
+          "type": "integer",
+          "description": "忽略行数 ",
+          "default": 0,
+          "minimum": 0
+        },
+        "limit": {
+          "type": "integer",
+          "description": "显示多少条 ",
+          "default": 200,
+          "minimum": 1,
+          "maximum": 5000
+        }
+      },
+      "required": [
+        "projectCode",
+        "taskInstanceId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "worker_groups",
+    "description": "查询worker group分组",
+    "method": "GET",
+    "path": "/worker-groups/all",
+    "access": "read",
+    "group": "projects",
+    "params": [],
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "lineage_get",
+    "description": "通过血缘代码查询工作流血缘关系",
+    "method": "GET",
+    "path": "/projects/{projectCode}/lineages/{workFlowCode}",
+    "access": "read",
+    "group": "workflows",
+    "params": [
+      {
+        "name": "projectCode",
+        "in": "path"
+      },
+      {
+        "name": "workFlowCode",
+        "in": "path"
+      }
+    ],
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": "项目Code  64位整数使用十进制字符串，避免精度丢失。"
+        },
+        "workFlowCode": {
+          "type": "string",
+          "pattern": "^-?[0-9]+$",
+          "description": " 64位整数使用十进制字符串，避免精度丢失。"
+        }
+      },
+      "required": [
+        "projectCode",
+        "workFlowCode"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": true
+    }
+  }
+]
