@@ -8,7 +8,11 @@ assert re.search(r'const version = "([^"]+)"',source).group(1)==m['version']
 tools=json.loads((root/'backend/tools.json').read_text(encoding='utf-8'))
 import jsonschema
 jsonschema.Draft202012Validator(json.loads((root/'schemas/manifest.schema.json').read_text(encoding='utf-8'))).validate(m)
-decl=next(x for x in m['contributions'] if x['type']=='mcp')['tools']
+contributions=m['contributions']
+assert len({c['id'] for c in contributions})==len(contributions), 'Duplicate contribution IDs'
+mcp=[c for c in contributions if c['type']=='mcp']
+assert len(mcp)==1, 'Exactly one MCP contribution is required'
+decl=mcp[0]['tools']
 assert 0<len(tools)<=64 and len({t['name'] for t in tools})==len(tools)
 assert set(decl)=={t['name'] for t in tools}
 for t in tools:
@@ -29,6 +33,8 @@ for name in sys.argv[1:]:
     with zipfile.ZipFile(path) as z:
         assert 'signature.json' not in z.namelist()
         package=json.loads(z.read('manifest.json'))
+        assert len({c['id'] for c in package['contributions']})==len(package['contributions'])
+        assert sum(c['type']=='mcp' for c in package['contributions'])==1
         assert package['id']==m['id'] and package['version']==m['version']
         assert package['entrypoints']['backend']['executable'] in z.namelist()
         assert package['entrypoints']['ui']['entry'] in z.namelist()

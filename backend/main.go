@@ -21,7 +21,7 @@ import (
 )
 
 const pluginID = "io.github.crayon-hua.dolphinscheduler-console"
-const version = "0.1.0"
+const version = "0.1.1"
 
 //go:embed tools.json
 var toolsData []byte

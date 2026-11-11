@@ -95,6 +95,7 @@ for name,method,path,access,group in entries:
         'annotations':{'readOnlyHint':access=='read','destructiveHint':access=='full','openWorldHint':True}})
 (root/'backend'/'tools.json').write_text(json.dumps(tools,ensure_ascii=False,indent=2),encoding='utf-8')
 manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+manifest['contributions']=[c for c in manifest['contributions'] if c['type']!='mcp']
 manifest['permissions']=[]
 manifest['description']='DolphinScheduler 项目、工作流、实例、调度与日志；连接由用户自行配置。'
 manifest['entrypoints']['backend']['transport']='stdio-jsonl'
